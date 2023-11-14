@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 04, 2023 at 03:28 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 14-11-2023 a las 03:55:36
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `revividor3000`
+-- Base de datos: `revividor3000`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `devices`
+-- Estructura de tabla para la tabla `devices`
 --
 
 CREATE TABLE `devices` (
@@ -33,11 +33,7 @@ CREATE TABLE `devices` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- RELATIONSHIPS FOR TABLE `devices`:
---
-
---
--- Dumping data for table `devices`
+-- Volcado de datos para la tabla `devices`
 --
 
 INSERT INTO `devices` (`device_id`, `device_name`) VALUES
@@ -51,7 +47,7 @@ INSERT INTO `devices` (`device_id`, `device_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_color`
+-- Estructura de tabla para la tabla `log_color`
 --
 
 CREATE TABLE `log_color` (
@@ -61,16 +57,10 @@ CREATE TABLE `log_color` (
   `color` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- RELATIONSHIPS FOR TABLE `log_color`:
---   `device_id`
---       `devices` -> `device_id`
---
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_hum`
+-- Estructura de tabla para la tabla `log_hum`
 --
 
 CREATE TABLE `log_hum` (
@@ -80,16 +70,10 @@ CREATE TABLE `log_hum` (
   `hum` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- RELATIONSHIPS FOR TABLE `log_hum`:
---   `device_id`
---       `devices` -> `device_id`
---
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_seg1`
+-- Estructura de tabla para la tabla `log_seg1`
 --
 
 CREATE TABLE `log_seg1` (
@@ -99,16 +83,10 @@ CREATE TABLE `log_seg1` (
   `dato_linea` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- RELATIONSHIPS FOR TABLE `log_seg1`:
---   `device_id`
---       `devices` -> `device_id`
---
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_seg2`
+-- Estructura de tabla para la tabla `log_seg2`
 --
 
 CREATE TABLE `log_seg2` (
@@ -118,16 +96,10 @@ CREATE TABLE `log_seg2` (
   `dato_linea` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- RELATIONSHIPS FOR TABLE `log_seg2`:
---   `device_id`
---       `devices` -> `device_id`
---
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_tag`
+-- Estructura de tabla para la tabla `log_tag`
 --
 
 CREATE TABLE `log_tag` (
@@ -138,18 +110,10 @@ CREATE TABLE `log_tag` (
   `tag` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- RELATIONSHIPS FOR TABLE `log_tag`:
---   `device_id`
---       `devices` -> `device_id`
---   `tag`
---       `paciente` -> `tag`
---
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_temp`
+-- Estructura de tabla para la tabla `log_temp`
 --
 
 CREATE TABLE `log_temp` (
@@ -159,16 +123,10 @@ CREATE TABLE `log_temp` (
   `temp` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- RELATIONSHIPS FOR TABLE `log_temp`:
---   `device_id`
---       `devices` -> `device_id`
---
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_tempdig`
+-- Estructura de tabla para la tabla `log_tempdig`
 --
 
 CREATE TABLE `log_tempdig` (
@@ -178,16 +136,10 @@ CREATE TABLE `log_tempdig` (
   `temp` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- RELATIONSHIPS FOR TABLE `log_tempdig`:
---   `device_id`
---       `devices` -> `device_id`
---
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `paciente`
+-- Estructura de tabla para la tabla `paciente`
 --
 
 CREATE TABLE `paciente` (
@@ -198,49 +150,45 @@ CREATE TABLE `paciente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- RELATIONSHIPS FOR TABLE `paciente`:
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `devices`
+-- Indices de la tabla `devices`
 --
 ALTER TABLE `devices`
   ADD PRIMARY KEY (`device_id`);
 
 --
--- Indexes for table `log_color`
+-- Indices de la tabla `log_color`
 --
 ALTER TABLE `log_color`
   ADD PRIMARY KEY (`log_id`),
   ADD KEY `device_id` (`device_id`);
 
 --
--- Indexes for table `log_hum`
+-- Indices de la tabla `log_hum`
 --
 ALTER TABLE `log_hum`
   ADD PRIMARY KEY (`log_id`),
   ADD KEY `device_id` (`device_id`);
 
 --
--- Indexes for table `log_seg1`
+-- Indices de la tabla `log_seg1`
 --
 ALTER TABLE `log_seg1`
   ADD PRIMARY KEY (`log_id`),
   ADD KEY `device_id` (`device_id`);
 
 --
--- Indexes for table `log_seg2`
+-- Indices de la tabla `log_seg2`
 --
 ALTER TABLE `log_seg2`
   ADD PRIMARY KEY (`log_id`),
   ADD KEY `device_id` (`device_id`);
 
 --
--- Indexes for table `log_tag`
+-- Indices de la tabla `log_tag`
 --
 ALTER TABLE `log_tag`
   ADD PRIMARY KEY (`log_id`),
@@ -248,120 +196,119 @@ ALTER TABLE `log_tag`
   ADD KEY `tag` (`tag`);
 
 --
--- Indexes for table `log_temp`
+-- Indices de la tabla `log_temp`
 --
 ALTER TABLE `log_temp`
   ADD PRIMARY KEY (`log_id`),
   ADD KEY `device_id` (`device_id`);
 
 --
--- Indexes for table `log_tempdig`
+-- Indices de la tabla `log_tempdig`
 --
 ALTER TABLE `log_tempdig`
   ADD PRIMARY KEY (`log_id`),
   ADD KEY `device_id` (`device_id`);
 
 --
--- Indexes for table `paciente`
+-- Indices de la tabla `paciente`
 --
 ALTER TABLE `paciente`
   ADD PRIMARY KEY (`tag`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `devices`
+-- AUTO_INCREMENT de la tabla `devices`
 --
 ALTER TABLE `devices`
   MODIFY `device_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `log_color`
+-- AUTO_INCREMENT de la tabla `log_color`
 --
 ALTER TABLE `log_color`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `log_hum`
+-- AUTO_INCREMENT de la tabla `log_hum`
 --
 ALTER TABLE `log_hum`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `log_seg1`
+-- AUTO_INCREMENT de la tabla `log_seg1`
 --
 ALTER TABLE `log_seg1`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `log_seg2`
+-- AUTO_INCREMENT de la tabla `log_seg2`
 --
 ALTER TABLE `log_seg2`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `log_tag`
+-- AUTO_INCREMENT de la tabla `log_tag`
 --
 ALTER TABLE `log_tag`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `log_temp`
+-- AUTO_INCREMENT de la tabla `log_temp`
 --
 ALTER TABLE `log_temp`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `log_tempdig`
+-- AUTO_INCREMENT de la tabla `log_tempdig`
 --
 ALTER TABLE `log_tempdig`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `log_color`
+-- Filtros para la tabla `log_color`
 --
 ALTER TABLE `log_color`
   ADD CONSTRAINT `log_color_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);
 
 --
--- Constraints for table `log_hum`
+-- Filtros para la tabla `log_hum`
 --
 ALTER TABLE `log_hum`
   ADD CONSTRAINT `log_hum_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);
 
 --
--- Constraints for table `log_seg1`
+-- Filtros para la tabla `log_seg1`
 --
 ALTER TABLE `log_seg1`
   ADD CONSTRAINT `log_seg1_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);
 
 --
--- Constraints for table `log_seg2`
+-- Filtros para la tabla `log_seg2`
 --
 ALTER TABLE `log_seg2`
   ADD CONSTRAINT `log_seg2_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);
 
 --
--- Constraints for table `log_tag`
+-- Filtros para la tabla `log_tag`
 --
 ALTER TABLE `log_tag`
-  ADD CONSTRAINT `log_tag_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`),
-  ADD CONSTRAINT `log_tag_ibfk_2` FOREIGN KEY (`tag`) REFERENCES `paciente` (`tag`);
+  ADD CONSTRAINT `log_tag_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);
 
 --
--- Constraints for table `log_temp`
+-- Filtros para la tabla `log_temp`
 --
 ALTER TABLE `log_temp`
   ADD CONSTRAINT `log_temp_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);
 
 --
--- Constraints for table `log_tempdig`
+-- Filtros para la tabla `log_tempdig`
 --
 ALTER TABLE `log_tempdig`
   ADD CONSTRAINT `log_tempdig_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);

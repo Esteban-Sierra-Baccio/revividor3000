@@ -1377,3 +1377,6 @@
 ::ffff:10.22.247.182 - - [04/Nov/2023:23:52:54 +0000] "POST /api/logHum/1/63.00 HTTP/1.1" 200 69 "-" "ESP8266HTTPClient"
 ::1 - - [08/Nov/2023:19:16:32 +0000] "GET / HTTP/1.1" 200 12 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0"
 ::1 - - [08/Nov/2023:19:16:32 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:3100/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0"
+::1 - - [14/Nov/2023:02:47:28 +0000] "POST /api/logtag/5/1010 HTTP/1.1" 200 32 "-" "PostmanRuntime/7.34.0"
+::1 - - [14/Nov/2023:02:50:37 +0000] "POST /api/logtag/5/1010 HTTP/1.1" 500 171 "-" "PostmanRuntime/7.34.0"
+::1 - - [14/Nov/2023:02:54:26 +0000] "POST /api/logtag/5/1010 HTTP/1.1" 200 69 "-" "PostmanRuntime/7.34.0"

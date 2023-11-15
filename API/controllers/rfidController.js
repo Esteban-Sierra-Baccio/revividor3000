@@ -29,22 +29,20 @@ if(req.params.deviceID != null && req.params.tag) {
 
 async getLogs(req,res){
   console.log("Get Logs")
-  console.log(req.params.deviceID)
-  if(req.params.deviceID!=null){
-      let deviceID = req.params.deviceID;
-      var sql = 'SELECT * FROM log_temp where device_id=${2}';
-      mysql.query(sql, (error, data, fields) => {
-          if(error) {
-              res.status(500)
-              res.send(error.message)
-          } else {
-              console.log(data)
-              res.json({
-                  data
-              })
-          }
-      })
-  }
+
+    var sql = 'SELECT * FROM log_tag';
+    mysql.query(sql, (error, data, fields) => {
+        if(error) {
+            res.status(500)
+            res.send(error.message)
+        } else {
+            console.log(data)
+            res.json({
+                data
+            })
+        }
+    })
+
 }
 }
 

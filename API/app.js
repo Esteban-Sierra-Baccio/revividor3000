@@ -1,3 +1,8 @@
+/*
+  API para basae de datos
+  Ultima modificacion: 15/nov/2023
+*/
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')

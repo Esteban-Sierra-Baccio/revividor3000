@@ -4,10 +4,8 @@ class MainController {
 
     async logTemp(req , res){
         console.log(req.params.temperature)
-        console.log(req.params.deviceID)
 
-if(req.params.deviceID != null && req.params.temperature) {
-    let deviceID = req.params.deviceID
+if(req.params.temperature) {
     let temperature = req.params.temperature;
     var sql1 = `insert into log_temp (log_date, device_id, temp) values (now(), 2, ${temperature})`;
     mysql.query(sql1,(error,data,fields) => {
@@ -32,24 +30,22 @@ if(req.params.deviceID != null && req.params.temperature) {
 
 async getLogs(req,res){
   console.log("Get Logs")
-  console.log(req.params.deviceID)
-  if(req.params.deviceID!=null){
-      let deviceID = req.params.deviceID;
-      var sql = 'SELECT * FROM log_temp where device_id=${2}';
-      mysql.query(sql, (error, data, fields) => {
-          if(error) {
-              res.status(500)
-              res.send(error.message)
-          } else {
-              console.log(data)
-              res.json({
-                  data
-              })
-          }
-      })
-  }
+    let deviceID = req.params.deviceID;
+    var sql = 'SELECT * FROM log_temp where device_id=2';
+    mysql.query(sql, (error, data, fields) => {
+        if(error) {
+            res.status(500)
+            res.send(error.message)
+        } else {
+            console.log(data)
+            res.json({
+                data
+            })
+        }
+    })
+
 }
 }
 
 const tempController = new MainController()
-module.exports = tempController;
+module.exports = tempController;

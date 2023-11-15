@@ -33,7 +33,7 @@ void setup() {
   dht.begin();
 
 
-  Serial.println("***Inicializando conexión a My SQL***");
+  Serial.println("**Inicializando conexión a My SQL**");
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
   delay(100);
@@ -67,7 +67,7 @@ if( isnan(temp) || isnan(hume)) {
   Serial.println("Error leyendo datos!!");
   return;
 }
-if(temp >= 23 || temp <= 25){    
+if(temp <= 25){    
   logIntento(temp);
   logIntento1(hume);
   lcd.clear();
@@ -136,4 +136,3 @@ void logIntento1(float hume){
 }
 return;
 }
-

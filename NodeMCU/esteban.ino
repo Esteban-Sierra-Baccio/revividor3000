@@ -41,7 +41,7 @@ const char* password = "spotless.magnetic.bridge";
 HTTPClient httpClient;
 WiFiClient wClient;
 
-String URL = "http://10.22.224.37:3100/api/logTemp/1/"; // pc.server:nodejsport/api/LogTemp/1/
+String URL = "http://10.22.227.70:3100/api/logtag/5/"; // pc.server:nodejsport/api/LogTemp/1/
 
 
 void setup() {
@@ -55,7 +55,7 @@ void setup() {
   Serial.println("Iniciando...");
 
   // Iniciamos conexión a internet
-  Serial.println("***Inicializando conexión a My SQL***");
+  Serial.println("**Inicializando conexión a My SQL**");
 
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
@@ -165,7 +165,7 @@ void isTagInDatabase(){
       Serial.println(doc["data"])
     }
     
-    httpClient.end(); 
-  
+    httpClient.end(); 
+  
 }
 */

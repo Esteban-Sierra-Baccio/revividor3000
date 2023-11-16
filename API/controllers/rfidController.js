@@ -30,7 +30,7 @@ if(req.params.tag) {
 async getLogs(req,res){
   console.log("Get Logs")
 
-    var sql = 'SELECT * FROM log_tag';
+    var sql = 'SELECT tag FROM paciente';
     mysql.query(sql, (error, data, fields) => {
         if(error) {
             res.status(500)

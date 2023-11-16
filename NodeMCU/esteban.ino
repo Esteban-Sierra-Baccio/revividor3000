@@ -41,7 +41,10 @@ const char* password = "spotless.magnetic.bridge";
 HTTPClient httpClient;
 WiFiClient wClient;
 
-String URL = "http://10.22.227.70:3100/api/logtag/5/"; // pc.server:nodejsport/api/LogTemp/1/
+String ip = "10.22.227.70";
+String port = "3100";
+
+String URL = "http://" + ip + ":" + port + "/api/logtag/5/"; // pc.server:nodejsport/api/LogTemp/1/
 
 
 void setup() {
@@ -93,11 +96,17 @@ void loop() {
     for (byte i = 0; i < 4; i++) {
       tag += rfid.uid.uidByte[i];
     }
+
+
+    
     Serial.println(tag);
     logIntento(tag);
-    //isTagInDatabase();
+    bool an = isTagInDatabase(tag);
+    Serial.println(an);
+
+    
     // Si el tag es el esperado, el sonido se repetirá 3 veces
-    if (tag == "67201018") {
+    if (an) {
       Serial.println("Acceso concedido!");
       digitalWrite(BZ_PIN, HIGH);
       delay(100);
@@ -141,31 +150,75 @@ void logIntento(String t){
     int httpResponseCode = httpClient.POST(data.c_str());
     Serial.println(httpResponseCode); 
     httpClient.end(); 
-  }
+  } else {
+    Serial.println("NodeMCU no conectado a Internet");
+    }
   return;
 }
-/*
-void isTagInDatabase(){
-  if(WiFi.status() == WL_CONNECTED){
-    String data = URL;
-    Serial.println(data); 
-    
-    httpClient.begin(wClient, data.c_str()); 
-    httpClient.addHeader("Content-Type", "Content-Type: application/json");
-    int httpResponse = httpClient.GET();
-    Serial.println(httpResponse); 
-    Serial.println(httpClient.getString());
 
-    DynamicJsonDocument doc(256);
-    DeserializationError error = deserializeJson(doc, httpClient.getString());
-    if(error){
-      Serial.println("Error al analizar el JSON");
+String nUrl = "http://" + ip + ":" + port + "/api/getLogs/5";
+
+bool isTagInDatabase(String tagg){
+  if(WiFi.status() == WL_CONNECTED){
+    
+    httpClient.begin(wClient,nUrl); //Specify the URL
+    int httpCode = httpClient.GET();                                 //Make the request
+    
+    if (httpCode > 0) { //Check for the returning code
+      if (httpCode == HTTP_CODE_OK) { 
+        String payload = httpClient.getString();
+        Serial.println(httpCode);
+        Serial.println(payload);
+
+// Analizar el JSON
+
+DynamicJsonDocument doc(256);
+DeserializationError error = deserializeJson(doc, payload);
+
+  if (error) {
+    Serial.println("Error al analizar el JSON");
+  } else {
+    // Extraer datos del JSON
+    String value = doc["data"][0]["tag"];
+
+    while (value.endsWith("\r") || value.endsWith("\n")) {
+      value.remove(value.length() - 1); // Elimina el último carácter
+    }
+
+    types(value);
+    //long val = atol(value.c_str());
+    //types(val);
+    
+    Serial.print(value);
+    Serial.print(" == ");
+    Serial.println(tagg);
+
+    httpClient.end();
+    if(value == tagg){
+      return true;
     } else {
-      //Extraer datos del JSON
-      Serial.println(doc["data"])
+      return false;
+    }
+
+  }
+
+// Fin del análisis del JSON
+ 
+        
+      } else {
+        Serial.printf("[HTTP] GET... failed, error: %s\n", httpClient.errorToString(httpCode).c_str());
+      }
+    } else {
+      Serial.println("Error on HTTP request");
     }
     
-    httpClient.end(); 
-  
+    httpClient.end(); //Free the resources
+  } else {Serial.println("NodeMCU no conectado a Internet");}
+  return false;
 }
-*/
+
+void types(String a) { Serial.println("it's a String"); }
+void types(int a) { Serial.println("it's an int"); }
+void types(char *a) { Serial.println("it's a char*"); }
+void types(float a) { Serial.println("it's a float"); }
+void types(bool a) { Serial.println("it's a bool"); }

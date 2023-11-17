@@ -21,7 +21,8 @@ int old_val = 0;
 HTTPClient httpClient;
 WiFiClient wClient;
 
-String URL = "http://10.22.181.124:3100/api/logTemp/1/";
+String URL = "http://10.22.164.187:3100/api/logTemp/1/";
+String URL2 = "http://10.22.164.187:3100/api/logButton/7/";
 
 void setup() {
   pinMode(button, INPUT);
@@ -66,7 +67,11 @@ void loop() {
     delay(10);
   }
   old_val = val;
-  if(estado==1){
+  if(estado==0){
+    logIntento2(estado);
+    Serial.print("Button:");
+    Serial.print(estado);
+    Serial.println();
     if (t > 33 && t < 42 ) {
 
       if (t >= 33 && t <= 35) {
@@ -86,10 +91,10 @@ void loop() {
       }
 
       //Se imprimen los datos de sensor
+      logIntento(t);
       Serial.print("Temperatura del Objeto= ");
       Serial.print(t); Serial.println(" °C");
       Serial.println();
-      logIntento(t); //+*****
       delay(500);
     }
     else {
@@ -99,6 +104,10 @@ void loop() {
     }
   }
   else {
+    logIntento2(estado);
+    Serial.print("Button:");
+    Serial.print(estado);
+    Serial.println();
     digitalWrite(verde, LOW);
     digitalWrite(amarillo, LOW);
     digitalWrite(rojo, LOW);
@@ -107,6 +116,20 @@ void loop() {
  }
 }
 
+void logIntento2(int t){
+  if(WiFi.status() == WL_CONNECTED){
+    String data = URL2;
+    data = data + t;
+    Serial.println(data); 
+    
+    httpClient.begin(wClient, data.c_str()); 
+    httpClient.addHeader("Content-Type", "Content-Type: application/json");
+    int httpResponseCode = httpClient.POST(data.c_str());
+    Serial.println(httpResponseCode); 
+    httpClient.end(); 
+  }
+  return;
+}
 
 void logIntento(float t){
   if(WiFi.status() == WL_CONNECTED){

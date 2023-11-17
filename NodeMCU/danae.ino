@@ -1,29 +1,17 @@
-#include <Wire.h>                  
-#include <ESP8266WiFi.h>
-#include <WiFiClient.h>
-#include <ESP8266HTTPClient.h>
-
+#include <Wire.h>
 
 //Defino pines para NodeMCU
 //MOTORES
-
+#define ENA 4 // D2
+#define ENB 2 // D4
+#define IN1 0 // D3
+#define IN2 13 // D7
+#define IN3 12 // D6
+#define IN4 14 // D5
 
 //SEGUIDOR DE LÍNEA
 const int SEG1 = D0;
 const int SEG2 = D1;
-
-
-// Conexion a internet
-const char* ssid = "Tec-IoT";
-const char* password = "spotless.magnetic.bridge";
-
-
-HTTPClient httpClient;
-WiFiClient wClient;
-
-
-String URLSeg = "http://10.22.172.75:3100/api/logSegLinea/3/"; // URL con IP y device_ID 3
-String URLSeg2 = "http://10.22.172.75:3100/api/logSegLinea2/4/"; // URL con IP y device_ID 4
 
 
 void setup() {
@@ -34,26 +22,23 @@ void setup() {
   pinMode(SEG1, INPUT);    
   pinMode(SEG2, INPUT);
 
+  // Establecemos modo de los pines del control de motores
+  pinMode(IN1,OUTPUT);
+  pinMode(IN2,OUTPUT);
+  pinMode(IN3,OUTPUT);
+  pinMode(IN4,OUTPUT);
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
 
-  Serial.println("*Inicializando conexión a My SQL*");
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
-  delay(100);
+  // Configuramos los dos motores a velocidad 150/255
+  analogWrite(ENA, 150); 
+  analogWrite(ENB, 150);  
 
-
-  WiFi.begin(ssid, password);
-  Serial.print("Conectando a red WiFi \"");
-  Serial.print(ssid);
-  Serial.print("\"");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.print("\nConectado! IP: ");
-  Serial.println(WiFi.localIP());
-  delay(500);
-
-
+  // Configuramos sentido de giro
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
 }
 
 
@@ -63,10 +48,6 @@ void loop() {
 // Leemos el valor de los infrarrojo: 0 - fondo claro y 1 - línea negra
   int valorInfra = digitalRead(SEG1);  
   int valorInfra1 = digitalRead(SEG2);
-
-
-  Serial.println(valorInfra);
-  Serial.println(valorInfra1);
      
   if( isnan(valorInfra) || isnan(valorInfra1)) {
     Serial.println("Error leyendo datos!!");
@@ -76,76 +57,39 @@ void loop() {
 
   // Cuatro escenarios: De frente      
   if(valorInfra == 0 && valorInfra1 == 0){
-    logIntento(valorInfra);
-    logIntento1(valorInfra1);
-
-
     Serial.println("Ninguno en linea");
-    delay(40);                    
+    // Modificamos sentido de giro de los motores
+    //Motor izquierdo
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    //Motor derecho
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
   }
 
 
   // El robot encuentra línea negra con el infrarrojo derecho y hay que corregir girando a la derecha
   if(valorInfra == 0 && valorInfra1 == 1){  
-    logIntento(valorInfra);
-    logIntento1(valorInfra1);
-
-
     Serial.println("Derecho en linea");
-   
-    delay(45);
+    // Modificamos sentido de giro de los motores
+    //Motor izquierdo
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    //Motor derecho
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4,HIGH);
   }
 
 
   // El robot encuentra línea negra con el infrarrojo izquierdo y hay que corregir girando a la izquierda
   if(valorInfra == 1 && valorInfra1 == 0){
-    logIntento(valorInfra);
-    logIntento1(valorInfra1);
+    // Modificamos sentido de giro de los motores
     Serial.println("Izquierdo en linea");
-   
-    delay(45);
+    //Motor izquierdo
+    digitalWrite(IN1,HIGH);
+    digitalWrite(IN2, LOW);
+    //Motor derecho
+    digitalWrite(IN3,HIGH);
+    digitalWrite(IN4, LOW);
   }
-
-
-  // Imprimir valores de cada seguidor
-  Serial.println("Seguidor de linea 1: " + String(abs(valorInfra)) + " Seguidor de linea 2: " + String(abs(valorInfra1)));
-  delay(2000);
-}
-
-
-// Log de Seguidor de Linea 1 en base de datos
-void logIntento(int In1){
-
-
-  if(WiFi.status() == WL_CONNECTED){ // Verificar conexión Wifi
-    String data = URLSeg;  
-    data = data + In1; // añadir medición al URL
-    Serial.println(data); // imprimir url con datos del sensor
-    // inicializar http
-    httpClient.begin(wClient, data.c_str());
-    httpClient.addHeader("Content-Type", "Content-Type: application/json");
-    int httpResponseCode = httpClient.POST(data.c_str()); // mandar la solicitud de POST con los datos del sensor
-    Serial.println(httpResponseCode); // imprimir respuesta de la solicitud
-    httpClient.end();
-}
-return;
-}
-
-
-// Log de Seguidor de Linea 2 en base de datos
-void logIntento1(int In2){
-
-
-  if(WiFi.status() == WL_CONNECTED){
-    String data = URLSeg2;
-    data = data + In2; // añadir medición al URL
-    Serial.println(data); // imprimir url con datos del sensor
-    // inicializar http
-    httpClient.begin(wClient, data.c_str());
-    httpClient.addHeader("Content-Type", "Content-Type: application/json");
-    int httpResponseCode = httpClient.POST(data.c_str()); // mandar la solicitud de POST con los datos del sensor
-    Serial.println(httpResponseCode); // imprimir respuesta de la solicitud
-    httpClient.end();
-}
-return;
 }

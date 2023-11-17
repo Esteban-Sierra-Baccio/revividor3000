@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-11-2023 a las 03:55:36
+-- Tiempo de generación: 18-11-2023 a las 00:43:50
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -42,7 +42,8 @@ INSERT INTO `devices` (`device_id`, `device_name`) VALUES
 (3, 'seg1'),
 (4, 'seg2'),
 (5, 'rfid'),
-(6, 'color');
+(6, 'color'),
+(7, 'button');
 
 -- --------------------------------------------------------
 
@@ -68,32 +69,6 @@ CREATE TABLE `log_hum` (
   `log_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `device_id` int(11) DEFAULT NULL,
   `hum` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `log_seg1`
---
-
-CREATE TABLE `log_seg1` (
-  `log_id` int(11) NOT NULL,
-  `log_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `device_id` int(11) DEFAULT NULL,
-  `dato_linea` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `log_seg2`
---
-
-CREATE TABLE `log_seg2` (
-  `log_id` int(11) NOT NULL,
-  `log_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `device_id` int(11) DEFAULT NULL,
-  `dato_linea` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -174,20 +149,6 @@ ALTER TABLE `log_hum`
   ADD KEY `device_id` (`device_id`);
 
 --
--- Indices de la tabla `log_seg1`
---
-ALTER TABLE `log_seg1`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `device_id` (`device_id`);
-
---
--- Indices de la tabla `log_seg2`
---
-ALTER TABLE `log_seg2`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `device_id` (`device_id`);
-
---
 -- Indices de la tabla `log_tag`
 --
 ALTER TABLE `log_tag`
@@ -238,18 +199,6 @@ ALTER TABLE `log_hum`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `log_seg1`
---
-ALTER TABLE `log_seg1`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `log_seg2`
---
-ALTER TABLE `log_seg2`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `log_tag`
 --
 ALTER TABLE `log_tag`
@@ -282,18 +231,6 @@ ALTER TABLE `log_color`
 --
 ALTER TABLE `log_hum`
   ADD CONSTRAINT `log_hum_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);
-
---
--- Filtros para la tabla `log_seg1`
---
-ALTER TABLE `log_seg1`
-  ADD CONSTRAINT `log_seg1_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);
-
---
--- Filtros para la tabla `log_seg2`
---
-ALTER TABLE `log_seg2`
-  ADD CONSTRAINT `log_seg2_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`);
 
 --
 -- Filtros para la tabla `log_tag`

@@ -27,7 +27,7 @@ class MainController {
     
     async getLogs(req,res){
         console.log("Get Logs")
-        var sql = "SELECT status FROM `log_color` ORDER BY log_date DESC LIMIT 1;"
+        var sql = "SELECT color FROM `log_color` ORDER BY log_date DESC LIMIT 1;"
         mysql.query(sql, (error, data, fields) => {
             if(error) {
                 res.status(500)

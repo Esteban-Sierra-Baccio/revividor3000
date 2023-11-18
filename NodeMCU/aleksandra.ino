@@ -6,7 +6,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);//Direccion de LCD
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266HTTPClient.h>
-#define DHTPIN 0 //Conectamos el Sensor al pin digital 9
+#define DHTPIN 0 //Conectamos el Sensor al pin digital 3
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -45,6 +45,9 @@ void setup() {
   Serial.print("\"");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Conectando");
     Serial.print(".");
   }
   Serial.print("\nConectado! IP: ");
@@ -56,8 +59,6 @@ void setup() {
 
 
 void loop() {
-
-
 float hume = dht.readHumidity();    // Lee la humedad
 float temp = dht.readTemperature();  // Y la temperatura
 Serial.println(hume);
@@ -65,22 +66,22 @@ Serial.println(temp);
      
 if( isnan(temp) || isnan(hume)) {
   Serial.println("Error leyendo datos!!");
-  return;
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("NaN");
 }
-if(temp <= 25){    
-  logIntento(temp);
-  logIntento1(hume);
+if(temp >= 0 && temp <= 25.99){    
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Estamos a ");
   lcd.print(String(abs(temp)));//Escribe la temperatura
   lcd.print("C");  
   lcd.setCursor(0, 1);
-  lcd.print("Temp. baja");            
-}
-if(temp >= 26 || temp <= 30){
+  lcd.print("Temp. baja");
   logIntento(temp);
-  logIntento1(hume);
+  logIntento1(hume);       
+}
+if(temp >= 26.00 && temp <= 30.99){
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Estamos a ");
@@ -88,10 +89,10 @@ if(temp >= 26 || temp <= 30){
   lcd.print("C");  
   lcd.setCursor(0, 1);
   lcd.print("Temp. intermedia");
-}
-if(temp > 30){
   logIntento(temp);
-  logIntento1(hume);  
+  logIntento1(hume);
+}
+if(temp > 30.99){
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Estamos a ");
@@ -99,6 +100,8 @@ if(temp > 30){
   lcd.print("C");  
   lcd.setCursor(0, 1);
   lcd.print("Temp. alta");
+  logIntento(temp);
+  logIntento1(hume);  
 }
   Serial.println("Temperatura: " + String(abs(temp)) + "Humedad: " + String(abs(hume)));
   delay(2000);
@@ -121,9 +124,8 @@ void logIntento(float temp){
 }
 return;
 }
+
 void logIntento1(float hume){
-
-
   if(WiFi.status() == WL_CONNECTED){
     String data = URLHum;
     data = data + hume;

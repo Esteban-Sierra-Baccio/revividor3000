@@ -21,8 +21,8 @@ int old_val = 0;
 HTTPClient httpClient;
 WiFiClient wClient;
 
-String URL = "http://10.22.164.187:3100/api/logTemp/1/";
-String URL2 = "http://10.22.164.187:3100/api/logButton/7/";
+String URL = "http://10.22.167.201:3100/api/logTemp/1/";
+String URL2 = "http://10.22.167.201:3100/api/logButton/7/";
 
 void setup() {
   pinMode(button, INPUT);
@@ -79,7 +79,7 @@ void loop() {
         digitalWrite(rojo, LOW);
         digitalWrite(verde, LOW);
       }
-      else if (t >= 36 && t < 37.5) {
+      else if (t >= 35.1 && t < 37.5) {
         digitalWrite(verde, HIGH);
         digitalWrite(amarillo, LOW);
         digitalWrite(rojo, LOW);

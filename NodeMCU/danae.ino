@@ -1,4 +1,10 @@
 #include <Wire.h>
+//Conexión a WiFi
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+//Establecer cliente de HTTP (librería)
+#include <ESP8266HTTPClient.h>
+#include <ArduinoJson.h>
 
 //Defino pines para NodeMCU
 //MOTORES
@@ -10,13 +16,47 @@
 #define IN4 14 // D5
 
 //SEGUIDOR DE LÍNEA
-const int SEG1 = D0;
-const int SEG2 = D1;
+#define SEG1 16 // D0
+#define SEG2 5 // D1
 
+//Nombre y password de la red
+const char* ssid = "Tec-IoT";
+const char* password = "spotless.magnetic.bridge";
+
+
+//Variables para HTTP de cliente
+HTTPClient httpClient;
+WiFiClient wClient;
+
+
+//Liga generada con Postman
+String URLcolor = "http://10.22.172.75:3100/api/getLogs/6";
 
 void setup() {
   Serial.begin(9600);
 
+  //Iniciar Serial Monitor
+  Serial.println("**Inicializando conexión a My SQL**");
+
+
+  //Conectar a internet
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  delay(100);
+
+
+  WiFi.begin(ssid, password);
+  Serial.print("Conectando a red WiFi \"");
+  Serial.print(ssid);
+  Serial.print("\"");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  //Mostrar IP a la que estamos conectado
+  Serial.print("\nConectado! IP: ");
+  Serial.println(WiFi.localIP());
+  delay(500);
 
   // Establecemos modo de los pines de los sensores infrarrojo
   pinMode(SEG1, INPUT);    
@@ -41,7 +81,6 @@ void setup() {
   digitalWrite(IN4, LOW);
 }
 
-
 void loop() {
 
 
@@ -65,6 +104,7 @@ void loop() {
     //Motor derecho
     digitalWrite(IN3, HIGH);
     digitalWrite(IN4, LOW);
+    isColorRed("Rojo");
   }
 
 
@@ -92,4 +132,60 @@ void loop() {
     digitalWrite(IN3,HIGH);
     digitalWrite(IN4, LOW);
   }
+}
+
+void isColorRed(String color){
+  if(WiFi.status() == WL_CONNECTED){
+    
+    httpClient.begin(wClient,URLcolor); //Specify the URL
+    int httpCode = httpClient.GET();                                 //Make the request
+    
+    if (httpCode > 0) { //Check for the returning code
+      if (httpCode == HTTP_CODE_OK) { 
+        String payload = httpClient.getString();
+        Serial.println(httpCode);
+        Serial.println(payload);
+
+// Analizar el JSON
+
+DynamicJsonDocument doc(256);
+DeserializationError error = deserializeJson(doc, payload);
+
+  if (error) {
+    Serial.println("Error al analizar el JSON");
+  } else {
+    // Extraer datos del JSON
+    String value = doc["data"][0]["color"];
+
+    while (value.endsWith("\r") || value.endsWith("\n")) {
+      value.remove(value.length() - 1); // Elimina el último carácter
+    }
+
+    Serial.print(value);
+    Serial.print(" == ");
+    Serial.println(color);
+
+    httpClient.end();
+    if(value == color){
+      digitalWrite(IN1, LOW);
+      digitalWrite(IN2, HIGH);
+      //Motor derecho
+      digitalWrite(IN3, LOW);
+      digitalWrite(IN4,HIGH);
+      delay(5000);
+    } else {
+    }
+
+  }
+
+// Fin del análisis del JSON       
+      } else {
+        Serial.printf("[HTTP] GET... failed, error: %s\n", httpClient.errorToString(httpCode).c_str());
+      }
+    } else {
+      Serial.println("Error on HTTP request");
+    }
+    
+    httpClient.end(); //Free the resources
+  } else {Serial.println("NodeMCU no conectado a Internet");}
 }

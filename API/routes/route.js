@@ -30,12 +30,4 @@ router.post('/api/logtag/5/:tag', rfidController.logtag);
 const colorController = require('../controllers/colorController');
 
 router.get('/api/getLogs/6', colorController.getLogs);
-router.post('/api/logTemp/6/:color', colorController.logColor);
-
-// Ruta 7: button
-const buttonController = require('../controllers/buttonController');
-
-router.get('/api/getLogs/7', buttonController.getLogs);
-router.post('/api/logButton/7/:status', buttonController.logButton);
-
-module.exports = router;
+router.post('/api/logColor/6/:color', colorController.logColor);

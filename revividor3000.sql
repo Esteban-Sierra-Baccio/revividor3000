@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-11-2023 a las 00:43:50
+-- Tiempo de generación: 18-11-2023 a las 19:36:24
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -190,7 +190,7 @@ ALTER TABLE `devices`
 -- AUTO_INCREMENT de la tabla `log_color`
 --
 ALTER TABLE `log_color`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=427;
 
 --
 -- AUTO_INCREMENT de la tabla `log_hum`

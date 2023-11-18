@@ -30,7 +30,7 @@ WiFiClient wClient;
 
 
 //Liga generada con Postman
-String URLcolor = "http://10.22.172.75:3100/api/getLogs/6";
+String URLcolor = "http://10.22.238.112:3100/api/getLogs/6";
 
 void setup() {
   Serial.begin(9600);
@@ -132,8 +132,19 @@ void loop() {
     digitalWrite(IN3,HIGH);
     digitalWrite(IN4, LOW);
   }
-}
 
+// Si llegan al final, se apagan los motores
+if(valorInfra == 1 && valorInfra1 == 1){
+    // Modificamos sentido de giro de los motores
+    Serial.println("Final");
+    //Motor izquierdo
+    digitalWrite(IN1,LOW);
+    digitalWrite(IN2, LOW);
+    //Motor derecho
+    digitalWrite(IN3,LOW);
+    digitalWrite(IN4, LOW);
+  }
+}
 void isColorRed(String color){
   if(WiFi.status() == WL_CONNECTED){
     
@@ -168,10 +179,10 @@ DeserializationError error = deserializeJson(doc, payload);
     httpClient.end();
     if(value == color){
       digitalWrite(IN1, LOW);
-      digitalWrite(IN2, HIGH);
+      digitalWrite(IN2, LOW);
       //Motor derecho
       digitalWrite(IN3, LOW);
-      digitalWrite(IN4,HIGH);
+      digitalWrite(IN4, LOW);
       delay(5000);
     } else {
     }

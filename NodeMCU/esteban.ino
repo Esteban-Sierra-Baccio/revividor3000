@@ -41,7 +41,7 @@ const char* password = "spotless.magnetic.bridge";
 HTTPClient httpClient;
 WiFiClient wClient;
 
-String ip = "10.22.227.70";
+String ip = "10.22.238.112";
 String port = "3100";
 
 String URL = "http://" + ip + ":" + port + "/api/logtag/5/"; // pc.server:nodejsport/api/LogTemp/1/
@@ -99,15 +99,14 @@ void loop() {
 
 
     
-    Serial.println(tag);
-    logIntento(tag);
+    Serial.println("Tag recibido: " + tag);
     bool an = isTagInDatabase(tag);
-    Serial.println(an);
 
     
     // Si el tag es el esperado, el sonido se repetirá 3 veces
     if (an) {
-      Serial.println("Acceso concedido!");
+      Serial.println("Acceso_concedido");
+      logIntento(tag,"Acceso_concedido");
       digitalWrite(BZ_PIN, HIGH);
       delay(100);
       digitalWrite(BZ_PIN, LOW);
@@ -123,6 +122,7 @@ void loop() {
     } else {
       // SI el tag es incorrecto, el sonidosolo se escuchará una vez, pero por dos segundos.
       Serial.println("Access Denied!");
+      logIntento(tag,"Acceso_denegado");
       digitalWrite(BZ_PIN, HIGH);
       delay(2000);
       digitalWrite(BZ_PIN, LOW);
@@ -137,18 +137,23 @@ void loop() {
  
 }
 
+void logIntento(String t,String lgbt){
+  Serial.print("Iniciando proceso POST: ");
+  String respuesta;
+  respuesta = String("/") + "'" + lgbt + "'";
 
-void logIntento(String t){
-  
   if(WiFi.status() == WL_CONNECTED){
     String data = URL;
-    data = data + t;
+    data = data + t + respuesta;
     Serial.println(data); 
     
-    httpClient.begin(wClient, data.c_str()); 
+    httpClient.begin(wClient, data.c_str());
     httpClient.addHeader("Content-Type", "Content-Type: application/json");
     int httpResponseCode = httpClient.POST(data.c_str());
-    Serial.println(httpResponseCode); 
+    
+    Serial.println(httpResponseCode);
+    Serial.println(httpClient.errorToString(httpResponseCode).c_str());
+
     httpClient.end(); 
   } else {
     Serial.println("NodeMCU no conectado a Internet");
@@ -159,6 +164,7 @@ void logIntento(String t){
 String nUrl = "http://" + ip + ":" + port + "/api/getLogs/5";
 
 bool isTagInDatabase(String tagg){
+  Serial.println("Iniciando proceso GET: " + nUrl);
   if(WiFi.status() == WL_CONNECTED){
     
     httpClient.begin(wClient,nUrl); //Specify the URL
@@ -184,8 +190,6 @@ DeserializationError error = deserializeJson(doc, payload);
     while (value.endsWith("\r") || value.endsWith("\n")) {
       value.remove(value.length() - 1); // Elimina el último carácter
     }
-
-    types(value);
     //long val = atol(value.c_str());
     //types(val);
     
@@ -216,9 +220,3 @@ DeserializationError error = deserializeJson(doc, payload);
   } else {Serial.println("NodeMCU no conectado a Internet");}
   return false;
 }
-
-void types(String a) { Serial.println("it's a String"); }
-void types(int a) { Serial.println("it's an int"); }
-void types(char *a) { Serial.println("it's a char*"); }
-void types(float a) { Serial.println("it's a float"); }
-void types(bool a) { Serial.println("it's a bool"); }

@@ -26,7 +26,7 @@ HTTPClient httpClient;
 WiFiClient wClient;
 
 //Liga generada con Postman
-String URL = "http://10.22.164.187:3100/api/logColor/6/";
+String URL = "http://10.22.238.112:3100/api/logColor/6/";
 
 void setup() {
   Serial.begin(9600); 
@@ -81,7 +81,7 @@ void loop() {
     //Llamado con temperatura
     logIntento(colorR);
       
-    delay(500);
+    delay(1000);
 }
 
 //Log de temperatura en base de datos
@@ -130,17 +130,16 @@ String identificaColor(){
   Serial.println(" ");
 
   //Parámetros para retornar rojo. Esto ayudará a parar el prototipo cuando se construya la API
-  if( rojo < 7 && verde > 7 && azul > 7){
-    return "Rojo";
-    Serial.println(" ");
-    Serial.print("Rojo");
-    Serial.println(" ");
+  if( rojo >= 3 && rojo <= 25){
+    if(verde >= 32 && verde <= 45){
+      if(azul >= 22 && azul <= 35){
+            return "Rojo";
+            Serial.println(" ");
+            Serial.print("Rojo");
+            Serial.println(" ");
+      }
+    }
   }
-  else{
-    return "No_rojo";
-    Serial.println(" ");
-    Serial.print("No rojo");
-    Serial.println(" ");
-  }
-  delay(1000);
+  return "No_rojo";
+
 }

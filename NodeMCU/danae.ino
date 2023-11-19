@@ -70,19 +70,15 @@ void setup() {
   pinMode(ENA, OUTPUT);
   pinMode(ENB, OUTPUT);
 
-  // Configuramos los dos motores a velocidad 150/255
-  analogWrite(ENA, 80); 
-  analogWrite(ENB, 80);  
+  // Configuramos los dos motores a velocidad 85/255
+  analogWrite(ENA, 84); 
+  analogWrite(ENB, 84);  
 
   // Configuramos sentido de giro
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, LOW);
+  stay();
 }
 
 void loop() {
-
 
 // Leemos el valor de los infrarrojo: 0 - fondo claro y 1 - línea negra
   int valorInfra = digitalRead(SEG1);  
@@ -100,6 +96,7 @@ void loop() {
     // Modificamos sentido de giro de los motores
     //Motor izquierdo
     isColorRed("Rojo");
+    go();
   }
 
 
@@ -107,12 +104,9 @@ void loop() {
   if(valorInfra == 0 && valorInfra1 == 1){  
     Serial.println("Derecho en linea");
     // Modificamos sentido de giro de los motores
-    //Motor izquierdo
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, HIGH);
-    //Motor derecho
-    digitalWrite(IN3, LOW);
-    digitalWrite(IN4,HIGH);
+    isColorRed("Rojo");
+    goRight();
+    //delay(1500);
   }
 
 
@@ -120,24 +114,16 @@ void loop() {
   if(valorInfra == 1 && valorInfra1 == 0){
     // Modificamos sentido de giro de los motores
     Serial.println("Izquierdo en linea");
-    //Motor izquierdo
-    digitalWrite(IN1,HIGH);
-    digitalWrite(IN2, LOW);
-    //Motor derecho
-    digitalWrite(IN3,HIGH);
-    digitalWrite(IN4, LOW);
+    isColorRed("Rojo");
+    goLeft();
+    //delay(1500);
   }
 
 // Si llegan al final, se apagan los motores
 if(valorInfra == 1 && valorInfra1 == 1){
     // Modificamos sentido de giro de los motores
     Serial.println("Final");
-    //Motor izquierdo
-    digitalWrite(IN1,LOW);
-    digitalWrite(IN2, LOW);
-    //Motor derecho
-    digitalWrite(IN3,LOW);
-    digitalWrite(IN4, LOW);
+    stay();
   }
 }
 void isColorRed(String color){
@@ -149,8 +135,6 @@ void isColorRed(String color){
     if (httpCode > 0) { //Check for the returning code
       if (httpCode == HTTP_CODE_OK) { 
         String payload = httpClient.getString();
-        Serial.println(httpCode);
-        Serial.println(payload);
 
 // Analizar el JSON
 
@@ -173,23 +157,11 @@ DeserializationError error = deserializeJson(doc, payload);
 
     httpClient.end();
     if(value == color){
-      digitalWrite(IN1, LOW);
-      digitalWrite(IN2, LOW);
-      //Motor derecho
-      digitalWrite(IN3, LOW);
-      digitalWrite(IN4, LOW);
-      delay(5000);
-      digitalWrite(IN1, LOW);
-      digitalWrite(IN2, HIGH);
-      //Motor derecho
-      digitalWrite(IN3, HIGH);
-      digitalWrite(IN4, LOW);
+      stay();
+      delay(2000);
+      go();
     } else {
-      digitalWrite(IN1, LOW);
-      digitalWrite(IN2, HIGH);
-      //Motor derecho
-      digitalWrite(IN3, HIGH);
-      digitalWrite(IN4, LOW);
+      return;
     }
 
   }
@@ -204,4 +176,44 @@ DeserializationError error = deserializeJson(doc, payload);
     
     httpClient.end(); //Free the resources
   } else {Serial.println("NodeMCU no conectado a Internet");}
+}
+
+void go(){
+  // Motor izquierdo
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  //Motor derecho
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  return;
+}
+
+void goRight(){
+  //Motor izquierdo
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  //Motor derecho
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4,HIGH);
+  return;
+}
+
+void goLeft(){
+  //Motor izquierdo
+  digitalWrite(IN1,LOW);
+  digitalWrite(IN2, HIGH);
+  //Motor derecho
+  digitalWrite(IN3,HIGH);
+  digitalWrite(IN4, LOW);
+  return;
+}
+
+ void stay(){
+  // Motor izquierdo
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  //Motor derecho
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  return;
 }

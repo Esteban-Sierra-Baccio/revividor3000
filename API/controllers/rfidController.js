@@ -4,9 +4,10 @@ class MainController {
 
     async logtag(req , res){
 
-if(req.params.tag) {
+if(req.params.tag && req.params.status) {
     let tag = req.params.tag;
-    var sql1 = `insert into log_tag (log_date, status, device_id,tag) values (now(), "aceptado", 5,${tag})`;
+    let status = req.params.status;
+    var sql1 = `insert into log_tag (log_date, status, device_id,tag) values (now(), ${status}, 5,${tag})`;
     mysql.query(sql1,(error,data,fields) => {
         if(error) {
             res.status(500)

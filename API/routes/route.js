@@ -24,7 +24,7 @@ router.post('/api/logHum/2/:humedad', humController.logHum);
 const rfidController = require('../controllers/rfidController')
 
 router.get('/api/getLogs/5', rfidController.getLogs);
-router.post('/api/logtag/5/:tag', rfidController.logtag);
+router.post('/api/logtag/5/:tag/:status', rfidController.logtag);
 
 // Ruta 6: color
 const colorController = require('../controllers/colorController');

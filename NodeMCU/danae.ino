@@ -178,7 +178,7 @@ DeserializationError error = deserializeJson(doc, payload);
       //Motor derecho
       digitalWrite(IN3, LOW);
       digitalWrite(IN4, LOW);
-      delay(5000);
+      delay(2000);
       digitalWrite(IN1, LOW);
       digitalWrite(IN2, HIGH);
       //Motor derecho

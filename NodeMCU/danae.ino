@@ -71,8 +71,8 @@ void setup() {
   pinMode(ENB, OUTPUT);
 
   // Configuramos los dos motores a velocidad 150/255
-  analogWrite(ENA, 150); 
-  analogWrite(ENB, 150);  
+  analogWrite(ENA, 80); 
+  analogWrite(ENB, 80);  
 
   // Configuramos sentido de giro
   digitalWrite(IN1, LOW);
@@ -99,11 +99,6 @@ void loop() {
     Serial.println("Ninguno en linea");
     // Modificamos sentido de giro de los motores
     //Motor izquierdo
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, HIGH);
-    //Motor derecho
-    digitalWrite(IN3, HIGH);
-    digitalWrite(IN4, LOW);
     isColorRed("Rojo");
   }
 
@@ -184,7 +179,17 @@ DeserializationError error = deserializeJson(doc, payload);
       digitalWrite(IN3, LOW);
       digitalWrite(IN4, LOW);
       delay(5000);
+      digitalWrite(IN1, LOW);
+      digitalWrite(IN2, HIGH);
+      //Motor derecho
+      digitalWrite(IN3, HIGH);
+      digitalWrite(IN4, LOW);
     } else {
+      digitalWrite(IN1, LOW);
+      digitalWrite(IN2, HIGH);
+      //Motor derecho
+      digitalWrite(IN3, HIGH);
+      digitalWrite(IN4, LOW);
     }
 
   }

@@ -1,9 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const fs = require("fs")
+const path = require("path")
 
 // Todas las rutas se basarán en la siguiente:
 // http://x.x.x.x:x/api/getLogs/x
 // http://x.x.x.x:x/api/log/x/y
+
+// Ruta 0: index.html
+router.get('/', (req, res) => {
+    res.sendFile("index.html", {root: path.join(__dirname, "../html")});
+})
 
 // Ruta 1: temperatura digital
 const tempDigController = require('../controllers/tempDigController');

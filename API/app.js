@@ -28,11 +28,11 @@ var accessLogStream = fs.createWriteStream(path.join(__dirname, '/logs/access.lo
 // setup the logger
 app.use(morgan('combined', { stream: accessLogStream }))
 app.use(router)
-
+/*
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('./html/lol.html')
 })
-
+*/
 const port = 3100
 
 // app.listen(process.env.PORT || port , (err) => {

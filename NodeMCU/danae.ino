@@ -156,7 +156,7 @@ DeserializationError error = deserializeJson(doc, payload);
     if(value == color){
       Serial.println("Stay()");
       stay();
-      delay(2000);
+      delay(5000);
       go();
       delay(1500);
     } else {

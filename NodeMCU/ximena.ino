@@ -26,7 +26,7 @@ HTTPClient httpClient;
 WiFiClient wClient;
 
 //Liga generada con Postman
-String URL = "http://10.22.238.112:3100/api/logColor/6/";
+String URL = "http://10.22.229.203:3100/api/logColor/6/";
 
 void setup() {
   Serial.begin(9600); 
@@ -132,7 +132,7 @@ String identificaColor(){
   //Parámetros para retornar rojo. Esto ayudará a parar el prototipo cuando se construya la API
   if( rojo >= 3 && rojo <= 25){
     if(verde >= 32 && verde <= 45){
-      if(azul >= 22 && azul <= 35){
+      if(azul >= 22 && azul <= 38){
             return "Rojo";
             Serial.println(" ");
             Serial.print("Rojo");

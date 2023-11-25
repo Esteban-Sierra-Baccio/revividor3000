@@ -14,6 +14,8 @@ const app = express()
 
 app.use(cors())
 
+app.set("view engine", "ejs")
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 

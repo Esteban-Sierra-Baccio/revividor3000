@@ -20,8 +20,8 @@ HTTPClient httpClient;
 WiFiClient wClient;
 
 
-String URLTemp = "http://10.22.181.110:3100/api/logTemp/1/";
-String URLHum = "http://10.22.181.110:3100/api/logHum/1/";
+String URLTemp = "http://10.22.229.203:3100/api/logTemp/2/";
+String URLHum = "http://10.22.229.203:3100/api/logHum/2/";
 
 
 // Conexion a LCD

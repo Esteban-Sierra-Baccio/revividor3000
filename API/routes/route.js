@@ -9,7 +9,7 @@ const path = require("path")
 
 // Ruta 0: index.html
 router.get('/', (req, res) => {
-    res.sendFile("index.html", {root: path.join(__dirname, "../html")});
+    res.render("index",{ text: "<world>"});
 })
 
 // Ruta 1: temperatura digital

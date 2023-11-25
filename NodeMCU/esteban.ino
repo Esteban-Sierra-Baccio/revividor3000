@@ -41,7 +41,7 @@ const char* password = "spotless.magnetic.bridge";
 HTTPClient httpClient;
 WiFiClient wClient;
 
-String ip = "10.22.238.112";
+String ip = "10.22.229.203";
 String port = "3100";
 
 String URL = "http://" + ip + ":" + port + "/api/logtag/5/"; // pc.server:nodejsport/api/LogTemp/1/
@@ -176,37 +176,40 @@ bool isTagInDatabase(String tagg){
         Serial.println(httpCode);
         Serial.println(payload);
 
-// Analizar el JSON
+        // Analizar el JSON
 
-DynamicJsonDocument doc(256);
-DeserializationError error = deserializeJson(doc, payload);
+        DynamicJsonDocument doc(256);
+        DeserializationError error = deserializeJson(doc, payload);
 
-  if (error) {
-    Serial.println("Error al analizar el JSON");
-  } else {
-    // Extraer datos del JSON
-    String value = doc["data"][0]["tag"];
+        if (error) {
+          Serial.println("Error al analizar el JSON");
+        } else {
+          String value = "lol";
+          int i = 0;
+          while (value != NULL && i  < 5){
+            // Extraer datos del JSON
+            String value = doc["data"][i]["tag"];
 
-    while (value.endsWith("\r") || value.endsWith("\n")) {
-      value.remove(value.length() - 1); // Elimina el último carácter
-    }
-    //long val = atol(value.c_str());
-    //types(val);
-    
-    Serial.print(value);
-    Serial.print(" == ");
-    Serial.println(tagg);
+            while (value.endsWith("\r") || value.endsWith("\n")) {
+              value.remove(value.length() - 1); // Elimina el último carácter
+            }
+            Serial.print(value);
+            Serial.print(" == ");
+            Serial.println(tagg);
 
-    httpClient.end();
-    if(value == tagg){
-      return true;
-    } else {
-      return false;
-    }
+            i = i + 1;
 
-  }
+            httpClient.end();
+            if(value == tagg){
+              return true;
+            }
+          }
+          return false;
 
-// Fin del análisis del JSON
+
+        }
+
+        // Fin del análisis del JSON
  
         
       } else {

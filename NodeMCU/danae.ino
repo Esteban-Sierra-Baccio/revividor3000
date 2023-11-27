@@ -71,8 +71,8 @@ void setup() {
   pinMode(ENB, OUTPUT);
 
   // Configuramos los dos motores a velocidad 85/255
-  analogWrite(ENA, 85); 
-  analogWrite(ENB, 85);  
+  analogWrite(ENA, 87); 
+  analogWrite(ENB, 87);  
 
   // Configuramos sentido de giro
   stay();

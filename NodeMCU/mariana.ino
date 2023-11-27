@@ -21,8 +21,8 @@ int old_val = 0;
 HTTPClient httpClient;
 WiFiClient wClient;
 
-String URL = "http://10.22.167.201:3100/api/logTemp/1/";
-String URL2 = "http://10.22.167.201:3100/api/logButton/7/";
+String URL = "http://10.22.229.203:3100/api/logTemp/1/";
+String URL2 = "http://10.22.229.203:3100/api/logButton/7/";
 
 void setup() {
   pinMode(button, INPUT);
@@ -68,10 +68,6 @@ void loop() {
   }
   old_val = val;
   if(estado==0){
-    logIntento2(estado);
-    Serial.print("Button:");
-    Serial.print(estado);
-    Serial.println();
     if (t > 33 && t < 42 ) {
 
       if (t >= 33 && t <= 35) {
@@ -104,31 +100,12 @@ void loop() {
     }
   }
   else {
-    logIntento2(estado);
-    Serial.print("Button:");
-    Serial.print(estado);
-    Serial.println();
     digitalWrite(verde, LOW);
     digitalWrite(amarillo, LOW);
     digitalWrite(rojo, LOW);
   }
    
  }
-}
-
-void logIntento2(int t){
-  if(WiFi.status() == WL_CONNECTED){
-    String data = URL2;
-    data = data + t;
-    Serial.println(data); 
-    
-    httpClient.begin(wClient, data.c_str()); 
-    httpClient.addHeader("Content-Type", "Content-Type: application/json");
-    int httpResponseCode = httpClient.POST(data.c_str());
-    Serial.println(httpResponseCode); 
-    httpClient.end(); 
-  }
-  return;
 }
 
 void logIntento(float t){
